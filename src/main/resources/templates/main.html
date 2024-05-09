@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Main Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        form {
+            width: 300px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        // 当页面加载完毕时执行
+        window.onload = function() {
+            // 获取年份选择框
+            var yearInput = document.getElementById('year');
+
+            // 设置最小和最大年份（这里设置为当前年份的前100年到后10年）
+            var currentYear = new Date().getFullYear();
+            var minYear = currentYear - 100;
+            var maxYear = currentYear + 10;
+
+            // 生成年份选项并添加到年份选择框中
+            for (var i = maxYear; i >= minYear; i--) {
+                var option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                yearInput.appendChild(option);
+            }
+        };
+    </script>
+</head>
+<body>
+<h1>Main Page</h1>
+<form action="/submit" method="post">
+    <label for="year">Year:</label>
+    <select id="year" name="year" required>
+        <!-- 年份选项将通过JavaScript动态生成 -->
+    </select>
+    <label for="text">Text:</label>
+    <input type="text" id="text" name="text" required>
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
