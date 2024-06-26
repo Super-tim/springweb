@@ -1,0 +1,15 @@
+新建springboot thymeleaf工程 main.html实现以下功能，如果涉及到js代码，css代码，单独保存对应的文件，不要混合在html文件里
+
+1，main.html页面有个下拉框，下拉框的数据来源于/api/getTaskList, 当打开/mian时候加载main.html，自动调用/api/getTaskList获取下拉框数据
+
+2，下拉框下面有4个并列的按钮，按钮1，按钮2，按钮3，按钮4
+
+3，按钮1的功能是上传本地文件，当点击按钮1，打开本地目录，选择一个文件，然后把这个文件作为参数调用/api/upload 接口上传文件，main.html弹出上传结果，成功或失败
+
+4，按钮2的功能是下载文件，当点击按钮2，把下拉框选择的值作为参数，调用/api/downlaod接口，接口返回一个文件，把该文件下载到本地
+
+5，按钮3的功能是生成报表，当点击按钮3，把下拉框选择的值作为参数，调用/api/generateReport接口，接口返回一个文件，把该文件下载到本地
+
+6, 按钮4的功能是调用任务，当点击按钮4，四个按钮上方有个空间，马上显示status: RUNNING，把下拉框选择的值作为参数，调用/api/executor接口,根据接口返回内容，更新四个按钮上方有个空间，显示status: success 或者status: failed
+
+https://chat18.aichatos.xyz/#/chat/1719414566203
