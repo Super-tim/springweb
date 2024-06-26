@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+    <!-- Link to your separate CSS file -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<h1>Main Page</h1>
+
+<!-- Dropdown for task selection -->
+<label for="taskSelect"></label>
+<select id="taskSelect">
+    <option th:each="task : ${taskList}" th:value="${task}" th:text="${task}"></option>
+</select>
+
+<!-- Buttons -->
+<div>
+    <button onclick="uploadFile()">Upload File</button>
+    <button onclick="downloadFile()">Download File</button>
+    <button onclick="generateReport()">Generate Report</button>
+    <button onclick="executeTask()">Execute Task</button>
+</div>
+
+<!-- Display area for status -->
+<div id="statusArea"></div>
+
+<!-- Separate script file -->
+<script src="scripts.js"></script>
+</body>
+</html>
