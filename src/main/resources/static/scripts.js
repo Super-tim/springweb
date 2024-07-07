@@ -61,13 +61,53 @@ function downloadFile() {
             xhr.send();
         }
 
-function generateReport() {
-    var taskId = document.getElementById("taskSelect").value;
-    // Implement report generation logic using /api/generateReport endpoint
-    // You can use window.location or fetch API
+function generateReport(reportData) {
+    // 假设reportData是一个包含多个对象的数组，每个对象代表报表的一行
+    let reportHtml = '<table border="1"><thead><tr>';
+    const reportData = [
+            {
+                "id": 1,
+                "product": "笔记本电脑",
+                "quantity": 5,
+                "saleDate": "2023-04-01",
+                "amount": 12000
+            }
+        ];
+    // 假设我们知道reportData的第一个对象的键将用作表头
+    if (reportData.length > 0) {
+        for (const key in reportData[0]) {
+            if (reportData[0].hasOwnProperty(key)) {
+                reportHtml += `<th>${key}</th>`;
+            }
+        }
+        reportHtml += '</tr></thead><tbody>';
+
+        // 遍历数据并添加到表格中
+        reportData.forEach(row => {
+            reportHtml += '<tr>';
+            for (const key in row) {
+                if (row.hasOwnProperty(key)) {
+                    reportHtml += `<td>${row[key]}</td>`;
+                }
+            }
+            reportHtml += '</tr>';
+        });
+
+        reportHtml += '</tbody></table>';
+
+        // 假设我们有一个ID为'reportContainer'的div元素来显示报表
+        const reportContainer = document.getElementById('reportContainer');
+        if (reportContainer) {
+            reportContainer.innerHTML = reportHtml; // 显示报表
+        } else {
+            console.error('No report container found!');
+        }
+    } else {
+        console.log('No report data to display.');
+    }
 }
 
-async function executeTask() {
+function executeTask() {
     // 获取下拉框选择的值作为参数
     var selectedValue = document.getElementById('taskSelect').value;
 
@@ -85,11 +125,14 @@ async function executeTask() {
             parameter: selectedValue
         })
     })
-    .then(response => {
-        if (!response.ok) {
+    .then(response => response.json())
+    .then(data  => {
+        if (!data.success) {
             throw new Error('Network response was not ok');
         }
         console.log(response);
+        generateReport(data.reportData); // 直接将数据传递给generateReport函数
+        enableReportButton();
         return response.text();
     })
     .then(data => {
@@ -100,6 +143,10 @@ async function executeTask() {
         console.error('Error during fetch:', error);
         statusDisplay.textContent = 'status: failed';
     });
+}
+
+function enableReportButton() {
+    document.getElementById('generateReportBtn').disabled = false;
 }
 
 
