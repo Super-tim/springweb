@@ -1,0 +1,46 @@
+https://www.cnblogs.com/zwh0910/p/15143717.html
+在Spring Boot工程中引入一个datepicker插件（例如Bootstrap Datepicker）涉及几个步骤：
+
+下载插件文件：
+首先，你需要下载datepicker插件的相关文件，通常包括CSS样式文件（.css）、字体文件（.woff, .woff2等）、JavaScript文件（.js）和可能的SCSS文件（.scss）。
+
+放置文件：
+将下载的文件放置在Spring Boot工程的合适目录下。一般来说，推荐的做法是：
+
+CSS文件放置在src/main/resources/static/css/目录下。
+JavaScript文件放置在src/main/resources/static/js/目录下。
+字体文件放置在src/main/resources/static/fonts/目录下。
+SCSS文件放置在src/main/resources/static/scss/目录下（如果有的话）。
+引入文件：
+在HTML文件或者Thymeleaf模板中引入这些文件。假设你的datepicker插件是Bootstrap Datepicker，你可以在HTML文件的<head>部分或者Thymeleaf模板的<head>部分中引入这些文件：
+
+html
+<!-- 引入CSS文件 -->
+<link rel="stylesheet" href="/css/datepicker.css">
+
+<!-- 引入JavaScript文件 -->
+<script src="/js/datepicker.js"></script>
+
+<!-- 如果有SCSS文件，通常不需要直接引入，而是通过构建工具（如Maven）编译为CSS -->
+
+<!-- 如果有字体文件 -->
+<!-- 假设字体文件夹内有多个文件，可以使用通配符来引入 -->
+<link rel="stylesheet" href="/fonts/font-awesome/css/all.css">
+注意：路径/css/、/js/、/fonts/等需要根据你实际放置文件的目录来调整。
+
+配置SCSS编译（如果有SCSS文件）：
+如果你的datepicker插件提供了SCSS文件，并且你使用了SCSS来编写样式，你需要配置Spring Boot项目来编译这些SCSS文件。通常可以通过Maven插件（如frontend-maven-plugin）或者Gradle插件来实现自动编译SCSS文件。
+
+初始化datepicker插件：
+根据datepicker插件的具体文档，在你的JavaScript代码中初始化datepicker插件，例如：
+
+javascript
+// 在DOM加载完成后初始化
+$(document).ready(function() {
+    $('#datepicker').datepicker({
+        // 你的配置选项
+    });
+});
+这里假设#datepicker是你HTML中的一个元素，可以通过jQuery选择器来选择它。
+
+通过以上步骤，你就能在Spring Boot工程中成功引入并使用一个datepicker插件了。确保在使用第三方插件时，遵循其文档和最佳实践来配置和使用。
