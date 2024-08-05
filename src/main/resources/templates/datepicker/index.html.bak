@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/datepicker.css">
+    <style>
+      .p20{
+        padding:20px;
+      }
+      .mt20{
+        margin-top:20px;
+      }
+      .mt40{
+        margin-top:40px;
+      }
+      .mt10{
+        margin-top:10px;
+      }
+      .hide{
+        display: none;
+      }
+      body{
+        height:1000px;
+      }
+      .c999{
+        color:#999;
+        font-size:12px;
+      }
+      
+    </style>
+</head>
+<body >
+	<h3>滑动选择请在移动端查看效果</h3>
+    <div class="p20">
+  
+
+      <div class="mt40">
+        <div>年月日时分秒范围选择，开始结束限制在一个自然月内 <span class="c999">(YYYY-MM-DD HH:mm:ss 范围)</span></div>
+        <div class="c-datepicker-date-editor J-datepicker-range-betweenMonth mt10">
+          <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
+          <input placeholder="开始日期" name="" class="c-datepicker-data-input" value="">
+          <span class="c-datepicker-range-separator">-</span>
+          <input placeholder="结束日期" name="" class="c-datepicker-data-input" value="">
+        </div>
+      </div>
+
+    </div>
+    <!-- <i class="c-datepicker-input__icon c-datepicker-range__close-icon"></i> -->
+    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="js/plugins/moment.min.js"></script>
+    <!-- <script src="js/datapicker-separate/api.js"></script>
+    <script src="js/datapicker-separate/year.js"></script>
+    <script src="js/datapicker-separate/month.js"></script>
+    <script src="js/datapicker-separate/day.js"></script>
+    <script src="js/datapicker-separate/time.js"></script>
+    <script src="js/datapicker-separate/time-only-time.js"></script>
+    <script src="js/datapicker-separate/datepicker.js"></script>
+    <script src="js/datapicker-separate/datepicker-only-time.js"></script> -->
+
+
+     <script src="js/datepicker.all.min.js"></script>
+
+    <script src="js/datepicker.en.js"></script>
+    <script type="text/javascript">
+     
+      $(function(){
+       
+        var DATAPICKERAPI = {
+          // 默认input显示当前月,自己获取后填充
+          activeMonthRange: function () {
+            return {
+              begin: moment().set({ 'date': 1, 'hour': 0, 'minute': 0, 'second': 0 }).format('YYYY-MM-DD HH:mm:ss'),
+              end: moment().set({ 'hour': 23, 'minute': 59, 'second': 59 }).format('YYYY-MM-DD HH:mm:ss')
+            }
+          },
+          shortcutMonth: function () {
+            // 当月
+            var nowDay = moment().get('date');
+			// weekday
+            var prevMonthNextMonth = moment().add(1, 'months').set({ 'date': 0 });
+            var prevMonthMonth = moment().diff(prevMonthNextMonth, 'months');
+			var prevMonthDay = moment().diff(prevMonthNextMonth, 'days');
+
+            return {
+              now: '-' + nowDay + ',0',
+              prev: '0,' + Math.abs(prevMonthDay)
+            }
+          },
+          // 近n小时计算返回
+          shortcutPrevHours: function (hour) {
+            var nowDay = moment().get('date');
+            var prevHours = moment().subtract(hour, 'hours');
+            var prevDate=prevHours.get('date')- nowDay;
+            var nowTime=moment().format('HH:mm:ss');
+            var prevTime = prevHours.format('HH:mm:ss');
+            return {
+              day: prevDate + ',0',
+              time: prevTime+',' + nowTime,
+              name: '近'+ hour+'小时'
+            }
+          },
+		  // 获得本周时间
+		  week: function() {
+            var date = new Date();
+            var week1 = date.getDay() == 0 ? 7 : date.getDay();
+			return '0,' + (7 - week1);
+		  },
+		  // 获得下周时间
+		  nextWeekDay: function() {
+            var date = new Date();
+            var week1 = date.getDay() == 0 ? 7 : date.getDay();
+			return (7 - week1 + 1) + ',' + ( (7 - week1 + 1) + 7 );
+		  },
+          // 注意为函数：快捷选项option:只能同一个月份内的
+          rangeMonthShortcutOption1: function () {
+		    var week = DATAPICKERAPI.week();
+			var nextWeek = DATAPICKERAPI.nextWeekDay();
+            var result = DATAPICKERAPI.shortcutMonth();
+            // 近24小时
+			var resultTime= DATAPICKERAPI.shortcutPrevHours(12);
+            var resultTime0= DATAPICKERAPI.shortcutPrevHours(24);
+            return [{
+              name: '今天',
+              day: '0,0',
+              time: '08:00:00,22:00:00'
+            }, {
+              name: '明天',
+              day: '1,1',
+              time: '08:00:00,22:00:00'
+            },  {
+              name: '后天',
+              day: '2,2',
+              time: '08:00:00,22:00:00'
+            }, {
+              name: '本周',
+              day: week,
+              time: resultTime0.time
+            }, {
+              name: '下周',
+              day: nextWeek,
+              time: resultTime0.time
+            }, {
+              name: '本月',
+              day: result.prev,
+              time: resultTime0.time
+            }, {
+              name: resultTime.name,
+              day: resultTime.day,
+              time: resultTime.time
+            }, {
+              name: resultTime0.name,
+              day: resultTime0.day,
+              time: resultTime0.time
+            }];
+          },
+         
+        };
+
+          //时分秒年月日范围，限制只能选择同一月，比如2018-10-01到2018-10-30
+          $('.J-datepicker-range-betweenMonth').datePicker({
+            isRange: true,
+            between:90,
+            hasShortcut: true,
+            shortcutOptions: DATAPICKERAPI.rangeMonthShortcutOption1()
+          });
+          
+          
+      });
+    </script>
+</body>
+</html>
